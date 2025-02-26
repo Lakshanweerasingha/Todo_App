@@ -1,3 +1,5 @@
+import React from 'react';
+
 const TaskList = ({ tasks, markAsDone, loading }) => {
     const recentTasks = tasks.filter(task => !task.completed).slice(0, 5);
 
