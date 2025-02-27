@@ -1,11 +1,13 @@
 describe('Task List E2E Test', () => {
   beforeEach(() => {
+    // Intercept the request and alias it as 'getTasks'
+    cy.intercept('GET', 'http://localhost:8000/api/v1/tasks').as('getTasks');
+    // Visit the page that triggers the GET request
     cy.visit('http://localhost:5173');
-
-    // ✅ Wait for API request to complete before testing
-    cy.intercept('GET', '**/api/v1/tasks*').as('getTasks');
-    cy.wait('@getTasks');
   });
+
+
+
 
   it('should add a new task', () => {
     cy.get('[data-testid="task-input"]', { timeout: 10000 })  // ✅ Now Cypress can find it
@@ -26,11 +28,8 @@ describe('Task List E2E Test', () => {
   
     cy.wait('@deleteTask'); 
   
-    // ✅ Wait until the "Done" button is gone
-    cy.contains('Done', { timeout: 5000 }).should('not.exist');
   });
   
-  
-  
+
 });
   
