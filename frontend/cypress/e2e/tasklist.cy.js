@@ -19,7 +19,7 @@ describe('Task List E2E Test', () => {
   it('should mark a task as done', () => {
     cy.intercept('DELETE', '**/api/v1/tasks/*').as('deleteTask');
     
-    cy.contains('Delete')
+    cy.contains('Done')
       .should('be.visible')
       .first()
       .click();

@@ -25,7 +25,7 @@ const TaskList = ({ tasks, markAsDone, loadingTaskId }) => {
                                 disabled={loadingTaskId === task.id}
                                 data-testid={`delete-button-${task.id}`}
                             >
-                                {loadingTaskId === task.id ? "Deleting..." : "Delete"}
+                                {loadingTaskId === task.id ? "Loading..." : "Done"}
                             </button>
                         </li>
                     ))}
