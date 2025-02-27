@@ -1,26 +1,36 @@
-import React from 'react';
+import React from "react";
 
-const TaskList = ({ tasks, markAsDone, loading }) => {
-    const recentTasks = tasks.filter(task => !task.completed).slice(0, 5);
-
+const TaskList = ({ tasks, markAsDone, loadingTaskId }) => {
     return (
-        <div className="w-full p-6">
-            <h2 className="text-3xl text-green-600 font-bold mb-4">Most Recent Tasks</h2>
-            {recentTasks.map((task, index) => (
-                <div key={index} className="mb-4 p-4 bg-gray-200 rounded-md shadow-md flex justify-between items-center">
-                    <div>
-                        <h3 className="text-xl text-green-700">{task.title}</h3>
-                        <p className="text-green-600">{task.description}</p>
-                    </div>
-                    <button
-                        onClick={() => markAsDone(task.id)}
-                        className={`border border-black text-black p-2 rounded-md ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300 transition'}`}
-                        disabled={loading}
-                    >
-                        {loading ? 'Loading...' : 'Done'}
-                    </button>
-                </div>
-            ))}
+        <div className="p-6">
+            <h2 className="text-3xl text-purple-600 font-bold mb-4">Task List</h2>
+            {tasks.length === 0 ? (
+                <p className="text-gray-500">No tasks available.</p>
+            ) : (
+                <ul className="space-y-4">
+                    {tasks.map((task) => (
+                        <li
+                            key={task.id}
+                            className="border border-gray-300 p-4 rounded-md flex justify-between items-center"
+                        >
+                            <div>
+                                <h3 className="text-lg font-semibold">{task.title}</h3>
+                                <p className="text-gray-600">{task.description}</p>
+                            </div>
+                            <button
+                                onClick={() => markAsDone(task.id)}
+                                className={`border border-black text-black p-2 rounded-md hover:bg-gray-300 transition ${
+                                    loadingTaskId === task.id ? "opacity-50 cursor-not-allowed" : ""
+                                }`}
+                                disabled={loadingTaskId === task.id}
+                                data-testid={`delete-button-${task.id}`}
+                            >
+                                {loadingTaskId === task.id ? "Deleting..." : "Delete"}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };

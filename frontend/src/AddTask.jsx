@@ -1,15 +1,16 @@
-import React from 'react';
-import { useState } from 'react';
+import { useState } from "react";
 
 const AddTask = ({ addTask, loading }) => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!title.trim()) return;
+
         addTask({ title, description });
-        setTitle('');
-        setDescription('');
+        setTitle("");
+        setDescription("");
     };
 
     return (
@@ -23,6 +24,7 @@ const AddTask = ({ addTask, loading }) => {
                     onChange={(e) => setTitle(e.target.value)}
                     className="border border-purple-400 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600"
                     disabled={loading}
+                    data-testid="task-input"
                 />
                 <textarea
                     placeholder="Description"
@@ -30,14 +32,18 @@ const AddTask = ({ addTask, loading }) => {
                     onChange={(e) => setDescription(e.target.value)}
                     className="border border-purple-400 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600"
                     disabled={loading}
+                    data-testid="task-desc"
                 />
                 <div className="flex justify-end">
                     <button
                         type="submit"
-                        className={`bg-blue-500 text-white p-2 rounded-md ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600 transition'}`}
+                        className={`bg-blue-500 text-white p-2 rounded-md ${
+                            loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600 transition"
+                        }`}
                         disabled={loading}
+                        data-testid="add-task-button"
                     >
-                        {loading ? 'Adding...' : 'Add'}
+                        {loading ? "Adding..." : "Add"}
                     </button>
                 </div>
             </form>

@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
-import AddTask from './AddTask';
-import TaskList from './TaskList';
-import './index.css';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import AddTask from "./AddTask";
+import TaskList from "./TaskList";
+import "./index.css";
+import axios from "axios";
 
 function App() {
     const [tasks, setTasks] = useState([]);
+    const [loadingTaskId, setLoadingTaskId] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
 
     useEffect(() => {
         fetchTasks();
@@ -15,12 +16,12 @@ function App() {
 
     const fetchTasks = async () => {
         setLoading(true);
-        setError('');
+        setError("");
         try {
-            const response = await axios.get('http://localhost:8000/api/v1/tasks');
+            const response = await axios.get("http://localhost:8000/api/v1/tasks");
             setTasks(response.data);
         } catch (err) {
-            setError('Failed to fetch tasks');
+            setError("Failed to fetch tasks");
         } finally {
             setLoading(false);
         }
@@ -28,27 +29,28 @@ function App() {
 
     const addTask = async (task) => {
         setLoading(true);
-        setError('');
+        setError("");
         try {
-            await axios.post('http://localhost:8000/api/v1/tasks', task);
+            await axios.post("http://localhost:8000/api/v1/tasks", task);
             fetchTasks();
         } catch (err) {
-            setError('Failed to add task');
+            setError("Failed to add task");
         } finally {
             setLoading(false);
         }
     };
 
     const markAsDone = async (id) => {
-        setLoading(true);
-        setError('');
+        setLoadingTaskId(id);
+        setError("");
+
         try {
             await axios.delete(`http://localhost:8000/api/v1/tasks/${id}`);
-            fetchTasks();
+            setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
         } catch (err) {
-            setError('Failed to mark task as done');
+            setError("Failed to mark task as done");
         } finally {
-            setLoading(false);
+            setLoadingTaskId(null);
         }
     };
 
@@ -58,7 +60,7 @@ function App() {
                 {error && <div className="text-red-500 mb-4">{error}</div>}
                 <AddTask addTask={addTask} loading={loading} />
                 <div className="border-l-2 border-gray-300">
-                    <TaskList tasks={tasks} markAsDone={markAsDone} loading={loading} />
+                    <TaskList tasks={tasks} markAsDone={markAsDone} loadingTaskId={loadingTaskId} />
                 </div>
             </div>
         </div>
