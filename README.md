@@ -13,7 +13,7 @@ Ensure you have the following installed on your system:
 
 ### 1. Clone the Repository
 ```sh
-git clone <repository_url>
+git clone https://github.com/Lakshanweerasingha/Todo_App
 cd <repository_name>
 ```
 
